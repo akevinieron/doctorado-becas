@@ -1,0 +1,2 @@
+probability,threshold,priority_label,explanation,model_name
+0.16741767525672913,0.32,baja,"Probabilidad estimada: 0.167. Factores favorables: promedio academico alto, alto nivel de necesidad economica. Puntos a mejorar: expediente documental incompleto o debil.",xgboost
