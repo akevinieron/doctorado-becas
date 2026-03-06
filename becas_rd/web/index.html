@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal Ciudadano de Becas RD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700&family=Prata&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="noise"></div>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <span class="brand-badge" id="brandBadge">Asistente IA + ruta guiada</span>
+          <h1 id="brandTitle">Portal Ciudadano de Becas RD</h1>
+        </div>
+        <div class="topbar-meta">
+          <span>Republica Dominicana</span>
+          <span>Sesion sin cuenta</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero-panel">
+          <div class="hero-copy">
+            <p class="kicker">Ciudadano primero</p>
+            <h2 id="heroHeadline"></h2>
+            <p class="hero-body" id="heroBody"></p>
+            <div class="hero-actions">
+              <button class="cta primary" id="startQuickButton" type="button">Iniciar evaluacion rapida</button>
+              <button class="cta secondary" id="startFullButton" type="button">Abrir postulacion guiada</button>
+            </div>
+          </div>
+          <div class="hero-data">
+            <div class="metric-grid" id="metricGrid"></div>
+            <div class="hero-orbit">
+              <div class="orbit-ring orbit-ring-a"></div>
+              <div class="orbit-ring orbit-ring-b"></div>
+              <div class="orbit-core">
+                <span>Ruta</span>
+                <strong>dual</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="overview-grid">
+          <div class="glass-panel">
+            <div class="section-header">
+              <p class="kicker">Programas</p>
+              <h3>Tipos de beca</h3>
+            </div>
+            <div class="card-grid" id="scholarshipGrid"></div>
+          </div>
+          <div class="glass-panel">
+            <div class="section-header">
+              <p class="kicker">Ruta de servicio</p>
+              <h3>Como funciona</h3>
+            </div>
+            <div class="timeline-grid" id="timelineGrid"></div>
+          </div>
+        </section>
+
+        <section class="workspace-grid">
+          <section class="wizard-column">
+            <div class="glass-panel wizard-shell" id="wizardSection">
+              <div class="wizard-topline">
+                <div>
+                  <p class="kicker">Recorrido</p>
+                  <h3>Wizard ciudadano</h3>
+                </div>
+                <div class="mode-switch" id="modeSwitch"></div>
+              </div>
+
+              <div class="step-progress" id="stepProgress"></div>
+              <div class="wizard-header" id="wizardHeader"></div>
+              <form id="wizardForm" class="wizard-form"></form>
+              <div class="wizard-actions">
+                <button type="button" class="cta tertiary" id="backStepButton">Anterior</button>
+                <button type="button" class="cta primary" id="nextStepButton">Siguiente</button>
+              </div>
+            </div>
+
+            <div class="glass-panel result-shell hidden" id="resultPanel"></div>
+
+            <div class="glass-panel">
+              <div class="section-header">
+                <p class="kicker">Preguntas frecuentes</p>
+                <h3>Lo esencial antes de aplicar</h3>
+              </div>
+              <div class="faq-grid" id="faqGrid"></div>
+            </div>
+          </section>
+
+          <aside class="chat-column">
+            <div class="glass-panel chat-shell">
+              <div class="chat-header">
+                <div>
+                  <p class="kicker">Asistente IA</p>
+                  <h3>Orientacion en vivo</h3>
+                </div>
+                <span class="chat-status">Activo</span>
+              </div>
+
+              <div class="suggestion-strip" id="suggestionStrip"></div>
+              <div class="chat-messages" id="chatMessages"></div>
+
+              <form class="chat-form" id="chatForm">
+                <label class="sr-only" for="chatInput">Pregunta al asistente</label>
+                <textarea
+                  id="chatInput"
+                  name="chatInput"
+                  rows="3"
+                  placeholder="Pregunta por documentos, criterios, fechas o como mejorar tu perfil."
+                ></textarea>
+                <button class="cta primary wide" type="submit" id="chatSubmitButton">Enviar consulta</button>
+              </form>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <template id="messageTemplate">
+      <div class="message">
+        <div class="message-role"></div>
+        <div class="message-body"></div>
+      </div>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
