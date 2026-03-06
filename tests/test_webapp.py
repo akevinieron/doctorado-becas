@@ -24,13 +24,18 @@ def test_portal_app_predict_and_chat():
     assert "prediction" in prediction
     assert prediction["documents"]
     assert "answer" in chat
+    assert "recommendations" in chat
+    assert "intent" in chat
 
 
 def test_portal_app_exposes_bootstrap_and_static_assets():
     app = PortalApp()
     bootstrap = app.get_bootstrap()
 
-    assert bootstrap["brand"]["title"] == "Portal Ciudadano de Becas RD"
+    assert bootstrap["brand"]["title"] == "Beca tu Futuro"
+    assert bootstrap["govBanner"]["text"]
+    assert bootstrap["convocations"]
+    assert bootstrap["assistant"]["entryPrompts"]
     assert (app.static_dir / "index.html").exists()
     assert (app.static_dir / "app.js").exists()
     assert (app.static_dir / "styles.css").exists()

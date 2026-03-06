@@ -29,6 +29,15 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Para activar el asistente LLM:
+
+```bash
+export OPENAI_API_KEY=tu_api_key
+export OPENAI_MODEL=gpt-5-mini
+```
+
+Si no defines `OPENAI_API_KEY`, el portal usa un fallback local con ranking y retrieval.
+
 ## Ejecutar pipeline completo
 
 ```bash
@@ -63,6 +72,8 @@ Endpoints disponibles:
 - `GET /api/bootstrap`
 - `POST /api/eligibility/predict`
 - `POST /api/assistant/chat`
+
+`POST /api/assistant/chat` devuelve `answer`, `intent`, `recommendations`, `references`, `suggestions` y `provider`.
 
 ## Funciones principales
 

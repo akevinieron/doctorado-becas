@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any, Dict, List
 
 from .data_generation import REGION_BY_PROVINCE
@@ -69,7 +70,7 @@ FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
     "programa_interes": {
         "label": "Programa de interes",
         "type": "text",
-        "placeholder": "Ingenieria de datos, educacion, salud publica...",
+        "placeholder": "Ej. ingenieria, medicina, educacion, datos, arquitectura...",
         "required": False,
     },
     "universidad_destino": {
@@ -148,7 +149,7 @@ FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
         ],
     },
     "ingreso_hogar_mensual_dop": {
-        "label": "Ingreso mensual del hogar (DOP)",
+        "label": "Ingreso mensual aproximado del hogar (DOP)",
         "type": "number",
         "required": True,
         "min": 12000,
@@ -172,13 +173,13 @@ FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
         "step": 0.1,
     },
     "score_documental": {
-        "label": "Preparacion documental",
+        "label": "Que tan listo esta tu expediente hoy?",
         "type": "number",
         "required": True,
         "min": 0,
         "max": 100,
         "step": 0.1,
-        "hint": "Evalua que tan listo esta tu expediente hoy.",
+        "hint": "Piensa en cartas, record, identificacion y evidencias ya reunidas.",
     },
     "horas_voluntariado": {
         "label": "Horas de voluntariado",
@@ -189,14 +190,14 @@ FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
         "step": 1,
     },
     "puntaje_ingles": {
-        "label": "Nivel de ingles",
+        "label": "Puntaje o nivel estimado de ingles",
         "type": "number",
         "required": True,
         "min": 0,
         "max": 100,
         "step": 0.1,
         "showWhen": {"field": "tipo_beca", "equals": "internacional"},
-        "hint": "Usa tu puntaje o una autoestimacion razonable si aun no tienes examen.",
+        "hint": "Si aun no tienes examen, usa una estimacion realista de tu nivel actual.",
     },
     "costo_anual_programa_dop": {
         "label": "Costo anual estimado del programa (DOP)",
@@ -264,30 +265,30 @@ FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
 QUICK_WIZARD_STEPS: List[Dict[str, Any]] = [
     {
         "id": "ruta",
-        "eyebrow": "Modo rapido",
-        "title": "Define tu ruta academica",
-        "description": "Ubicamos el tipo de beca, nivel y programa para orientar la evaluacion inicial.",
+        "eyebrow": "Evaluacion rapida",
+        "title": "Que quieres estudiar y por donde quieres empezar?",
+        "description": "Definimos tu ruta academica para darte una orientacion inicial sin rodeos.",
         "fields": ["tipo_beca", "nivel_estudio", "programa_interes"],
     },
     {
         "id": "perfil",
-        "eyebrow": "Ciudadania",
-        "title": "Cuadro personal y territorial",
-        "description": "Usamos estos datos para aproximar contexto, region y trayectoria de acceso.",
+        "eyebrow": "Perfil personal",
+        "title": "Cuentanos tu contexto",
+        "description": "Necesitamos una vista basica de tu realidad para orientar mejor la recomendacion.",
         "fields": ["edad", "genero", "provincia", "zona"],
     },
     {
         "id": "academico",
-        "eyebrow": "Merito",
-        "title": "Tu base academica y documental",
-        "description": "Este bloque captura preparacion academica, documental y experiencia solidaria.",
+        "eyebrow": "Base academica",
+        "title": "Como va tu preparacion hasta ahora?",
+        "description": "Aqui estimamos fortaleza academica, avance documental y participacion extracurricular.",
         "fields": ["promedio_academico", "score_documental", "horas_voluntariado", "puntaje_ingles"],
     },
     {
         "id": "contexto",
-        "eyebrow": "Contexto social",
-        "title": "Capacidad economica y entorno familiar",
-        "description": "Esto nos ayuda a perfilar nivel de necesidad economica y responsabilidad familiar.",
+        "eyebrow": "Entorno social",
+        "title": "Como es tu realidad economica y familiar?",
+        "description": "Este bloque ayuda a entender necesidad economica y barreras de acceso.",
         "fields": [
             "ingreso_hogar_mensual_dop",
             "miembros_hogar",
@@ -297,9 +298,9 @@ QUICK_WIZARD_STEPS: List[Dict[str, Any]] = [
     },
     {
         "id": "costos",
-        "eyebrow": "Viabilidad",
-        "title": "Costo estimado del programa",
-        "description": "Con esto cerramos la orientacion y calculamos una pre-evaluacion inmediata.",
+        "eyebrow": "Cierre",
+        "title": "Cerremos con el costo del programa",
+        "description": "Con este dato calculamos tu resultado orientativo y te proponemos proximos pasos.",
         "fields": ["costo_anual_programa_dop"],
     },
 ]
@@ -308,43 +309,43 @@ FULL_WIZARD_STEPS: List[Dict[str, Any]] = [
     {
         "id": "identidad",
         "eyebrow": "Postulacion guiada",
-        "title": "Identidad y contacto",
-        "description": "Preparamos una ficha ciudadana mas completa para una postulacion guiada en una sola sesion.",
+        "title": "Empecemos con tus datos base",
+        "description": "Abrimos una ficha clara para acompanarte durante toda la preparacion.",
         "fields": ["nombre_completo", "correo", "telefono", "tipo_beca", "nivel_estudio"],
     },
     {
         "id": "trayectoria",
-        "eyebrow": "Proposito",
-        "title": "Programa y trayectoria deseada",
-        "description": "Definimos el destino academico y el impacto que esperas producir.",
+        "eyebrow": "Proyeccion",
+        "title": "A donde quieres llegar?",
+        "description": "Define tu meta academica y el impacto profesional que quieres construir.",
         "fields": ["programa_interes", "universidad_destino", "objetivo_profesional"],
     },
     {
         "id": "territorio",
         "eyebrow": "Contexto",
-        "title": "Perfil ciudadano y territorial",
-        "description": "Capturamos ubicacion, edad y condiciones del hogar para orientar la priorizacion.",
+        "title": "Tu realidad hoy",
+        "description": "Recogemos informacion personal y territorial para orientar tu ruta con mas precision.",
         "fields": ["edad", "genero", "provincia", "zona", "ingreso_hogar_mensual_dop", "miembros_hogar"],
     },
     {
         "id": "academico",
-        "eyebrow": "Merito",
-        "title": "Base academica y evidencia de preparacion",
-        "description": "Profundizamos en tu desempeno academico, nivel documental y experiencia social.",
+        "eyebrow": "Preparacion",
+        "title": "Fortaleza academica y avance del expediente",
+        "description": "Profundizamos en tu desempeno, evidencia disponible y experiencia complementaria.",
         "fields": ["promedio_academico", "score_documental", "horas_voluntariado", "puntaje_ingles"],
     },
     {
         "id": "inclusion",
-        "eyebrow": "Equidad",
-        "title": "Condiciones de acceso e inclusion",
-        "description": "Este bloque mejora la lectura de necesidades y barreras estructurales.",
+        "eyebrow": "Acceso",
+        "title": "Barreras, inclusion y viabilidad economica",
+        "description": "Esto nos ayuda a leer mejor tus condiciones de acceso y el costo total del programa.",
         "fields": ["primera_generacion_universitaria", "discapacidad", "costo_anual_programa_dop"],
     },
     {
         "id": "documentos",
-        "eyebrow": "Checklist",
-        "title": "Estado documental",
-        "description": "Marcamos lo que ya tienes listo y lo que debes reunir para postular con mas fuerza.",
+        "eyebrow": "Documentos",
+        "title": "Que tienes listo y que te falta?",
+        "description": "Cerramos la sesion armando un mapa claro de tu expediente documental.",
         "fields": [
             "record_academico_listo",
             "identificacion_vigente",
@@ -357,6 +358,205 @@ FULL_WIZARD_STEPS: List[Dict[str, Any]] = [
         ],
     },
 ]
+
+PORTAL_SCHOLARSHIP_CATALOG: List[Dict[str, Any]] = [
+    {
+        "id": "conv-nac-grado-stem-2026",
+        "title": "Becas nacionales de grado en STEM y educacion",
+        "type": "nacional",
+        "level": "grado",
+        "areas": ["ingenieria", "tecnologia", "matematicas", "ciencias", "educacion"],
+        "keywords": ["stem", "ingenieria", "ciencias", "docencia", "tecnologia", "educacion"],
+        "modality": "presencial",
+        "coverage": "Republica Dominicana",
+        "country": "Republica Dominicana",
+        "description": (
+            "Programas de grado en universidades dominicanas para perfiles con vocacion academica, "
+            "interes en STEM y disposicion para impacto social o educativo."
+        ),
+        "requirements": [
+            "Promedio academico recomendado de 80 o mas.",
+            "Expediente documental basico completo.",
+            "Interes claro en areas STEM o educacion.",
+        ],
+        "documents": [
+            "Record academico oficial",
+            "Cedula vigente",
+            "Carta de motivacion",
+            "Evidencia socioeconomica del hogar",
+        ],
+        "priorities": [
+            "Carreras STEM",
+            "Formacion docente",
+            "Impacto comunitario",
+        ],
+        "status": "Abierta",
+        "deadline": "15 de mayo de 2026",
+        "defaultMode": "quick",
+        "prefill": {"tipo_beca": "nacional", "nivel_estudio": "grado"},
+        "eligibility": {
+            "min_average": 80.0,
+            "min_document_score": 55.0,
+            "min_english": None,
+            "requires_international_admission": False,
+        },
+    },
+    {
+        "id": "conv-nac-maestria-gestion-publica-2026",
+        "title": "Becas nacionales de maestria en gestion publica, educacion y salud",
+        "type": "nacional",
+        "level": "maestria",
+        "areas": ["gestion publica", "educacion", "salud publica", "politicas publicas"],
+        "keywords": ["gestion", "politicas", "educacion", "salud", "servicio publico"],
+        "modality": "mixta",
+        "coverage": "Republica Dominicana",
+        "country": "Republica Dominicana",
+        "description": (
+            "Oferta de maestrias nacionales para fortalecer liderazgos profesionales en gestion publica, "
+            "educacion y salud, con foco en impacto territorial."
+        ),
+        "requirements": [
+            "Promedio academico recomendado de 82 o mas.",
+            "Narrativa profesional alineada con servicio publico.",
+            "Documentacion personal y academica consistente.",
+        ],
+        "documents": [
+            "Record academico oficial",
+            "Carta de motivacion",
+            "Plan de estudios o propuesta academica",
+            "Evidencia socioeconomica",
+        ],
+        "priorities": [
+            "Servicio publico",
+            "Transformacion educativa",
+            "Salud territorial",
+        ],
+        "status": "Abierta",
+        "deadline": "20 de mayo de 2026",
+        "defaultMode": "full",
+        "prefill": {"tipo_beca": "nacional", "nivel_estudio": "maestria"},
+        "eligibility": {
+            "min_average": 82.0,
+            "min_document_score": 60.0,
+            "min_english": None,
+            "requires_international_admission": False,
+        },
+    },
+    {
+        "id": "conv-int-maestria-stem-salud-2026",
+        "title": "Maestrias internacionales en STEM y salud publica",
+        "type": "internacional",
+        "level": "maestria",
+        "areas": ["ingenieria", "datos", "tecnologia", "salud publica", "innovacion"],
+        "keywords": ["maestria", "internacional", "stem", "salud", "datos", "innovacion"],
+        "modality": "presencial",
+        "coverage": "Internacional",
+        "country": "Multipaís",
+        "description": (
+            "Convocatoria internacional priorizada para perfiles con base academica solida en STEM, analitica, "
+            "innovacion o salud publica y con potencial de retorno e impacto nacional."
+        ),
+        "requirements": [
+            "Promedio academico recomendado de 85 o mas.",
+            "Puntaje o nivel de ingles recomendado de 72 o mas.",
+            "Plan de estudios y narrativa internacional convincentes.",
+        ],
+        "documents": [
+            "Carta de admision o preadmision",
+            "Evidencia de idioma",
+            "Presupuesto anual estimado",
+            "Carta de motivacion",
+        ],
+        "priorities": [
+            "Innovacion",
+            "Transformacion digital",
+            "Salud publica",
+        ],
+        "status": "Abierta",
+        "deadline": "22 de mayo de 2026",
+        "defaultMode": "full",
+        "prefill": {"tipo_beca": "internacional", "nivel_estudio": "maestria"},
+        "eligibility": {
+            "min_average": 85.0,
+            "min_document_score": 65.0,
+            "min_english": 72.0,
+            "requires_international_admission": True,
+        },
+    },
+    {
+        "id": "conv-int-doctorado-impacto-2026",
+        "title": "Doctorados internacionales de alto impacto",
+        "type": "internacional",
+        "level": "doctorado",
+        "areas": ["investigacion", "ingenieria", "salud", "educacion", "ciencias sociales"],
+        "keywords": ["doctorado", "investigacion", "publicaciones", "academia", "impacto"],
+        "modality": "presencial",
+        "coverage": "Internacional",
+        "country": "Multipaís",
+        "description": (
+            "Doctorados internacionales orientados a investigacion aplicada y formacion avanzada para perfiles "
+            "con trayectoria academica fuerte, potencial de liderazgo y alto compromiso de retorno."
+        ),
+        "requirements": [
+            "Promedio academico recomendado de 88 o mas.",
+            "Puntaje o nivel de ingles recomendado de 78 o mas.",
+            "Perfil academico y documental robusto.",
+        ],
+        "documents": [
+            "Carta de admision o preadmision",
+            "Evidencia de idioma",
+            "Plan de investigacion",
+            "Presupuesto anual estimado",
+        ],
+        "priorities": [
+            "Investigacion aplicada",
+            "Innovacion cientifica",
+            "Impacto nacional",
+        ],
+        "status": "Proxima a cerrar",
+        "deadline": "03 de junio de 2026",
+        "defaultMode": "full",
+        "prefill": {"tipo_beca": "internacional", "nivel_estudio": "doctorado"},
+        "eligibility": {
+            "min_average": 88.0,
+            "min_document_score": 72.0,
+            "min_english": 78.0,
+            "requires_international_admission": True,
+        },
+    },
+]
+
+
+def get_portal_scholarships() -> List[Dict[str, Any]]:
+    return deepcopy(PORTAL_SCHOLARSHIP_CATALOG)
+
+
+def get_scholarship_by_id(scholarship_id: str | None) -> Dict[str, Any] | None:
+    if not scholarship_id:
+        return None
+    for scholarship in PORTAL_SCHOLARSHIP_CATALOG:
+        if scholarship["id"] == scholarship_id:
+            return deepcopy(scholarship)
+    return None
+
+
+def build_convocation_cards() -> List[Dict[str, Any]]:
+    cards: List[Dict[str, Any]] = []
+    for scholarship in PORTAL_SCHOLARSHIP_CATALOG:
+        cards.append(
+            {
+                "id": scholarship["id"],
+                "name": scholarship["title"],
+                "description": scholarship["description"],
+                "type": scholarship["type"],
+                "level": scholarship["level"],
+                "deadline": scholarship["deadline"],
+                "status": scholarship["status"],
+                "defaultMode": scholarship["defaultMode"],
+                "prefill": scholarship["prefill"],
+            }
+        )
+    return cards
 
 
 def _coerce_number(value: Any) -> float | None:
@@ -557,9 +757,10 @@ def build_next_steps(profile: Dict[str, Any], prediction: Dict[str, Any], mode: 
 def build_chat_suggestions(step_id: str | None, applicant: Dict[str, Any] | None, has_result: bool) -> List[str]:
     tipo_beca = (applicant or {}).get("tipo_beca")
     suggestions = [
+        "Que becas del portal encajan con mi perfil?",
         "Que documentos me faltan para postular?",
-        "Como se evalua la necesidad economica?",
         "Explicame el proceso paso a paso.",
+        "Como se evalua mi perfil?",
     ]
 
     if step_id == "academico":
@@ -577,41 +778,109 @@ def build_chat_suggestions(step_id: str | None, applicant: Dict[str, Any] | None
 
 
 def build_bootstrap_payload() -> Dict[str, Any]:
+    scholarships = get_portal_scholarships()
+    featured = scholarships[2]
     return {
         "brand": {
-            "title": "Portal Ciudadano de Becas RD",
-            "subtitle": "Orientacion dominicana para decidir, preparar y fortalecer una postulacion en una sola sesion.",
-            "badge": "Asistente IA + ruta guiada",
+            "title": "Beca tu Futuro",
+            "subtitle": "Una plataforma que concentra oportunidades, orientacion y herramientas de preparacion para becas dominicanas.",
+            "badge": "Portal oficial de becas",
+        },
+        "govBanner": {
+            "text": "Esta es una web oficial del Gobierno de la Republica Dominicana.",
+            "helper": "Asi es como puedes saberlo",
+        },
+        "header": {
+            "nav": [
+                {"label": "Inicio", "href": "#inicio"},
+                {"label": "Convocatorias", "href": "#convocatorias"},
+                {"label": "Orientacion IA", "href": "#orientacion"},
+                {"label": "Postulacion", "href": "#herramientas"},
+            ],
+            "primaryCta": "Ver convocatorias",
+            "secondaryCta": "Iniciar orientacion",
         },
         "hero": {
-            "headline": "Becas dominicanas con una experiencia pensada para quien postula, no para quien redacta el reglamento.",
+            "status": "Ya esta disponible",
+            "headline": featured["title"],
             "body": (
-                "Evalua tu caso, recorre una via rapida o una postulacion guiada completa, "
-                "y conversa con un asistente que te ayuda a entender documentos, criterios y proximos pasos."
+                "Explora oportunidades de becas, revisa requisitos clave y recibe orientacion inteligente basada en tu perfil y tus metas academicas."
             ),
-            "primaryCta": "Iniciar evaluacion rapida",
-            "secondaryCta": "Abrir postulacion guiada",
+            "deadlineLabel": "Aplica hasta el:",
+            "deadline": featured["deadline"],
+            "primaryCta": "Ver convocatoria",
+            "secondaryCta": "Abrir orientacion",
+        },
+        "featuredConvocation": {
+            "id": featured["id"],
+            "title": featured["title"],
+            "deadline": featured["deadline"],
+            "type": featured["type"],
+            "level": featured["level"],
+            "summary": featured["description"],
+            "defaultMode": featured["defaultMode"],
+            "prefill": featured["prefill"],
         },
         "stats": [
-            {"value": "16", "label": "provincias modeladas"},
-            {"value": "2", "label": "rutas de navegacion"},
-            {"value": "1", "label": "sesion continua"},
-        ],
-        "scholarshipTypes": [
             {
-                "name": "Beca nacional",
-                "description": "Cobertura parcial o total para programas en universidades de Republica Dominicana.",
+                "value": "1 portal",
+                "label": "todo en un solo lugar",
+                "detail": "Consulta convocatorias, orientate y organiza tu expediente en la misma plataforma.",
             },
             {
-                "name": "Beca internacional",
-                "description": "Apoyo para estudios fuera del pais con foco en maestria y doctorado.",
+                "value": "2 rutas",
+                "label": "rapida o guiada",
+                "detail": "Elige entre una lectura breve de tu perfil o una postulacion paso a paso.",
+            },
+            {
+                "value": "IA + datos",
+                "label": "acompanamiento orientativo",
+                "detail": "El asistente te explica requisitos, documentos y siguientes pasos con base en el proyecto.",
+            },
+        ],
+        "convocationFilters": [
+            {"id": "all", "label": "Todas"},
+            {"id": "nacional", "label": "Nacionales"},
+            {"id": "internacional", "label": "Internacionales"},
+            {"id": "grado", "label": "Grado"},
+            {"id": "maestria", "label": "Maestria"},
+            {"id": "doctorado", "label": "Doctorado"},
+        ],
+        "convocations": build_convocation_cards(),
+        "videoSection": {
+            "titleLines": [
+                "Dale a play y conoce",
+                "todas las opciones que",
+                "Beca tu Futuro trae para ti",
+            ],
+            "button": "Ver video explicativo",
+            "url": "https://www.youtube.com/watch?v=BoCf3tIuzy4",
+        },
+        "tools": [
+            {
+                "id": "assistant",
+                "title": "Asistente de orientacion",
+                "description": "Haz preguntas, recibe becas recomendadas para tu perfil y entiende por que encajan contigo.",
+                "button": "Abrir asistente",
+            },
+            {
+                "id": "quick",
+                "title": "Evaluacion rapida",
+                "description": "Recibe una lectura orientativa de tu perfil en pocos pasos.",
+                "button": "Iniciar evaluacion",
+            },
+            {
+                "id": "full",
+                "title": "Postulacion guiada",
+                "description": "Organiza un expediente mas completo y prepara mejor tu aplicacion.",
+                "button": "Abrir postulacion",
             },
         ],
         "timeline": [
-            {"step": "01", "title": "Diagnostica", "body": "Completa la via rapida o la postulacion guiada."},
-            {"step": "02", "title": "Interpreta", "body": "Recibe prioridad, probabilidad y factores explicativos."},
-            {"step": "03", "title": "Afina", "body": "Cierra documentos pendientes y fortalece el expediente."},
-            {"step": "04", "title": "Consulta", "body": "Usa el chat para convertir dudas en acciones concretas."},
+            {"step": "01", "title": "Explora oportunidades", "body": "Revisa convocatorias y decide cual se ajusta mejor a tu meta academica."},
+            {"step": "02", "title": "Orientate", "body": "Usa el asistente para entender requisitos, documentos y prioridades."},
+            {"step": "03", "title": "Prepara tu perfil", "body": "Activa una evaluacion rapida o una postulacion guiada segun tu avance."},
+            {"step": "04", "title": "Fortalece tu expediente", "body": "Recibe una lista clara de proximos pasos antes de aplicar."},
         ],
         "faq": [
             {
@@ -628,21 +897,47 @@ def build_bootstrap_payload() -> Dict[str, Any]:
             },
         ],
         "assistant": {
+            "entryTitle": "Haz tus preguntas y recibe orientacion inteligente basada en tu perfil antes de empezar a llenar formularios.",
+            "entryBody": (
+                "El asistente te ayuda a entender convocatorias, recomendar becas del portal, revisar documentos y definir la ruta recomendada segun tu caso."
+            ),
+            "entryPrompts": [
+                "No se por donde empezar. Que me recomiendas?",
+                "Que becas del portal encajan con mi perfil?",
+                "Quiero una beca internacional. Que necesito primero?",
+                "Que documentos debo reunir antes de aplicar?",
+            ],
+            "capabilities": [
+                "Te recomienda becas del portal segun tu nivel, interes y preparacion actual.",
+                "Te ayuda a interpretar convocatorias, requisitos y documentos en lenguaje simple.",
+                "Traduce tu resultado orientativo en acciones concretas y siguientes pasos.",
+            ],
             "greeting": (
-                "Hola. Soy tu asistente de orientacion para becas RD. "
-                "Puedo explicarte requisitos, documentos, criterios y proximos pasos segun tu caso."
-            )
+                "Hola. Soy tu asistente de orientacion para becas. "
+                "Puedo ayudarte a entender convocatorias, recomendar becas del portal para tu perfil, revisar documentos y decirte la mejor ruta para empezar."
+            ),
+        },
+        "footer": {
+            "helpLinks": ["Terminos de uso", "Politica de privacidad", "Preguntas frecuentes"],
+            "infoTitle": "Informacion",
+            "infoBody": "Ministerio de Educacion Superior, Ciencia y Tecnologia. Republica Dominicana.",
+            "contactTitle": "Contactanos",
+            "contactItems": ["Tel: (809) 731 1100", "Fax: (809) 731-1101", "info@mescyt.gob.do"],
+            "addressTitle": "Buscanos",
+            "addressBody": "Av. Maximo Gomez No. 31, esq. Pedro Henriquez Urena, Santo Domingo, Republica Dominicana.",
+            "social": ["Facebook", "Youtube", "Twitter", "Instagram"],
+            "copyright": "© 2024 Todos los Derechos Reservados.",
         },
         "fields": FIELD_DEFINITIONS,
         "wizards": {
             "quick": {
                 "label": "Evaluacion rapida",
-                "summary": "Diagnostico orientativo de baja friccion con respuesta inmediata.",
+                "summary": "Ruta breve para obtener una lectura inicial de tu perfil.",
                 "steps": QUICK_WIZARD_STEPS,
             },
             "full": {
                 "label": "Postulacion guiada",
-                "summary": "Recorrido completo para construir un expediente orientativo en una sola interaccion.",
+                "summary": "Ruta completa para organizar mejor tu caso y tu expediente.",
                 "steps": FULL_WIZARD_STEPS,
             },
         },

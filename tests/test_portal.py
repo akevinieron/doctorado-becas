@@ -1,4 +1,4 @@
-from becas_rd.portal import build_bootstrap_payload, build_required_documents, normalize_portal_payload
+from becas_rd.portal import build_bootstrap_payload, build_required_documents, get_portal_scholarships, normalize_portal_payload
 
 
 def test_normalize_portal_payload_infers_region_and_types():
@@ -49,3 +49,5 @@ def test_bootstrap_exposes_two_wizard_modes():
     assert "quick" in payload["wizards"]
     assert "full" in payload["wizards"]
     assert payload["hero"]["primaryCta"]
+    assert payload["convocations"]
+    assert get_portal_scholarships()

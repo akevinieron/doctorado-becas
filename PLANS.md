@@ -18,7 +18,7 @@ Archivo operativo para seguimiento del trabajo. Antes de implementar cambios, re
 ### 1. Base web inicial
 
 - [x] Seleccionar y crear la estructura de la app web y la API ligera sin alterar el core academico existente.
-- [x] Definir variables de tema, tipografias, layout base y sistema visual futurista-premium.
+- [x] Definir variables de tema, tipografias, layout base y sistema visual centrado en claridad y servicio.
 - [x] Establecer el contrato inicial de estado para `wizardMode`, `applicantProfile`, `eligibilityResult`, `chatMessages` y `requiredDocuments`.
 
 ### 2. Portal editorial ciudadano
@@ -54,3 +54,23 @@ Archivo operativo para seguimiento del trabajo. Antes de implementar cambios, re
 - [x] Revisar estados vacios, errores, feedback visual y mensajes de validacion.
 - [x] Verificar accesibilidad basica, contraste, foco visible y funcionamiento responsive.
 - [x] Actualizar documentacion tecnica y de producto conforme se cierre cada fase.
+
+### 7. Rediseño UX v2
+
+- [x] Reorientar la home hacia una experiencia portal-first con el asistente IA como punto de entrada principal.
+- [x] Reducir el peso visual del wizard para que funcione como siguiente paso y no como panel dominante.
+- [x] Sustituir la direccion visual futurista por una interfaz mas limpia, amable y moderna para jovenes estudiantes.
+
+### 8. Replica del portal oficial
+
+- [x] Reestructurar la home para que replique la arquitectura visual de `becas.gob.do`.
+- [x] Incorporar banner gubernamental, hero de convocatoria, grilla de convocatorias, bloque audiovisual y footer institucional.
+- [x] Reubicar el wizard y el chat dentro de esa nueva narrativa sin romper la experiencia interactiva existente.
+
+### 9. Asistente LLM y recomendacion
+
+- [x] Reemplazar el asistente TF-IDF actual por una arquitectura LLM-first con OpenAI API y fallback local.
+- [x] Crear una base estructurada de becas del portal para alimentar tanto la UI como el ranking de recomendaciones.
+- [x] Ampliar `POST /api/assistant/chat` para aceptar historial y devolver intencion, recomendaciones y referencias.
+- [x] Mejorar la UI del chat para mostrar recomendaciones de becas y evidencia usada por el asistente.
+- [x] Cubrir ranking, contrato del chat y fallback del proveedor con pruebas automatizadas.

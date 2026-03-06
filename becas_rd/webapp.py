@@ -19,6 +19,7 @@ from .portal import (
     build_next_steps,
     build_profile_signals,
     build_required_documents,
+    get_portal_scholarships,
     normalize_portal_payload,
     validate_applicant_payload,
 )
@@ -34,8 +35,9 @@ class PortalApp:
         self.static_dir = Path(static_dir or Path(__file__).resolve().parent / "web").resolve()
         self.artifacts_path = Path(artifacts_path)
         self.docs_paths = [Path(p) for p in (docs_paths or ["docs/reglamento_becas_rd.md", "docs/faq_becas_rd.md"])]
+        self.scholarships = get_portal_scholarships()
         self.bootstrap = build_bootstrap_payload()
-        self.assistant = ScholarshipAssistant(self.docs_paths)
+        self.assistant = ScholarshipAssistant(self.docs_paths, scholarships=self.scholarships)
         self._artifacts = None
 
     def ensure_artifacts(self) -> Dict[str, Any]:
@@ -83,28 +85,30 @@ class PortalApp:
         applicant = normalize_portal_payload(payload.get("applicant_context"))
         step_context = payload.get("step_context") or {}
         prediction = payload.get("prediction")
+        history = payload.get("history") or []
+        selected_convocation_id = payload.get("selected_convocation_id")
 
         if prediction is None and payload.get("allow_prediction"):
             missing = validate_applicant_payload(applicant)
             if not missing:
                 prediction = predict_eligibility(applicant, artifacts=self.ensure_artifacts())
 
-        answer = self.assistant.respond(
+        answer = self.assistant.answer(
             question=question,
             applicant_context=applicant if any(value is not None for value in applicant.values()) else None,
             prediction=prediction,
+            history=history if isinstance(history, list) else [],
+            step_context=step_context if isinstance(step_context, dict) else {},
+            selected_convocation_id=str(selected_convocation_id) if selected_convocation_id else None,
         )
-
-        retrieval = self.assistant.retrieve(question, top_k=2)
-        return {
-            "answer": answer,
-            "references": [{"source": item.source, "score": round(item.score, 4)} for item in retrieval],
-            "suggestions": build_chat_suggestions(
+        response = answer.to_dict()
+        if not response["suggestions"]:
+            response["suggestions"] = build_chat_suggestions(
                 step_context.get("step_id"),
                 applicant=applicant,
                 has_result=prediction is not None,
-            ),
-        }
+            )
+        return response
 
 
 class PortalHTTPServer(ThreadingHTTPServer):

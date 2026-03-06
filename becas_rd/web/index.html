@@ -3,109 +3,118 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portal Ciudadano de Becas RD</title>
+    <title>Beca tu Futuro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700&family=Prata&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div class="noise"></div>
-    <div class="page-shell">
-      <header class="topbar">
-        <div class="brand-lockup">
-          <span class="brand-badge" id="brandBadge">Asistente IA + ruta guiada</span>
-          <h1 id="brandTitle">Portal Ciudadano de Becas RD</h1>
+    <div class="gov-banner">
+      <div class="container gov-banner-inner">
+        <div class="gov-banner-copy">
+          <img src="/assets/do-flag.png" alt="Bandera de Republica Dominicana" />
+          <span id="govBannerText"></span>
         </div>
-        <div class="topbar-meta">
-          <span>Republica Dominicana</span>
-          <span>Sesion sin cuenta</span>
-        </div>
-      </header>
+        <button class="gov-banner-helper" type="button" id="govBannerHelper"></button>
+      </div>
+    </div>
 
-      <main>
-        <section class="hero-panel">
+    <header class="site-header">
+      <div class="container site-header-inner">
+        <div class="site-brand">
+          <p class="site-brand-mark">Beca tu Futuro</p>
+          <span id="brandSubtitle"></span>
+        </div>
+
+        <nav class="site-nav" id="headerNav"></nav>
+
+        <div class="site-header-actions">
+          <button class="button button-ghost" type="button" id="headerPrimaryButton">Ver convocatorias</button>
+          <button class="button button-solid" type="button" id="headerSecondaryButton">Iniciar orientacion</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-grid">
           <div class="hero-copy">
-            <p class="kicker">Ciudadano primero</p>
-            <h2 id="heroHeadline"></h2>
-            <p class="hero-body" id="heroBody"></p>
-            <div class="hero-actions">
-              <button class="cta primary" id="startQuickButton" type="button">Iniciar evaluacion rapida</button>
-              <button class="cta secondary" id="startFullButton" type="button">Abrir postulacion guiada</button>
-            </div>
-          </div>
-          <div class="hero-data">
-            <div class="metric-grid" id="metricGrid"></div>
-            <div class="hero-orbit">
-              <div class="orbit-ring orbit-ring-a"></div>
-              <div class="orbit-ring orbit-ring-b"></div>
-              <div class="orbit-core">
-                <span>Ruta</span>
-                <strong>dual</strong>
+            <div class="container hero-copy-inner">
+              <p class="hero-status" id="heroStatus"></p>
+              <div class="hero-title-wrap">
+                <h1 id="heroHeadline"></h1>
               </div>
+              <p class="hero-deadline">
+                <span id="heroDeadlineLabel"></span>
+                <strong id="heroDeadline"></strong>
+              </p>
+              <p class="hero-body" id="heroBody"></p>
+              <div class="hero-rule"></div>
+              <div class="hero-actions">
+                <button class="button button-accent" type="button" id="heroPrimaryButton">Ver convocatoria</button>
+                <button class="button button-outline" type="button" id="heroSecondaryButton">Abrir orientacion</button>
+              </div>
+              <div class="hero-stats" id="heroStats"></div>
             </div>
           </div>
-        </section>
 
-        <section class="overview-grid">
-          <div class="glass-panel">
-            <div class="section-header">
-              <p class="kicker">Programas</p>
-              <h3>Tipos de beca</h3>
-            </div>
-            <div class="card-grid" id="scholarshipGrid"></div>
+          <div class="hero-visual">
+            <img src="/assets/hero-students.png" alt="Grupo de estudiantes" />
           </div>
-          <div class="glass-panel">
-            <div class="section-header">
-              <p class="kicker">Ruta de servicio</p>
-              <h3>Como funciona</h3>
-            </div>
-            <div class="timeline-grid" id="timelineGrid"></div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="workspace-grid">
-          <section class="wizard-column">
-            <div class="glass-panel wizard-shell" id="wizardSection">
-              <div class="wizard-topline">
+      <section class="convocations-section" id="convocatorias">
+        <div class="container">
+          <div class="section-topline">
+            <div class="section-topline-copy">
+              <h2>ULTIMAS CONVOCATORIAS</h2>
+              <div class="filters" id="convocationFilterStrip"></div>
+            </div>
+            <button class="text-link" type="button" id="viewAllConvocationsButton">Ver todas las convocatorias</button>
+          </div>
+
+          <div class="convocations-divider"></div>
+          <div class="convocation-grid" id="convocationGrid"></div>
+        </div>
+      </section>
+
+      <section class="video-section">
+        <div class="container video-section-inner">
+          <div class="video-image">
+            <img src="/assets/macbook-becas.png" alt="Macbook Beca tu Futuro" />
+          </div>
+
+          <div class="video-copy">
+            <div id="videoTitleLines"></div>
+            <a class="button button-dark" id="videoButton" href="#" target="_blank" rel="noreferrer noopener">
+              Ver video explicativo
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="tools-section" id="orientacion">
+        <div class="container">
+          <div class="tools-topline">
+            <div>
+              <p class="section-eyebrow">ORIENTACION Y HERRAMIENTAS</p>
+              <h2>Preparate mejor antes de aplicar</h2>
+            </div>
+          </div>
+
+          <div class="tools-grid">
+            <div class="assistant-panel">
+              <div class="assistant-panel-header">
                 <div>
-                  <p class="kicker">Recorrido</p>
-                  <h3>Wizard ciudadano</h3>
+                  <p class="section-eyebrow">Asistente IA</p>
+                  <h3 id="assistantEntryTitle"></h3>
+                  <p class="assistant-copy" id="assistantEntryBody"></p>
                 </div>
-                <div class="mode-switch" id="modeSwitch"></div>
-              </div>
-
-              <div class="step-progress" id="stepProgress"></div>
-              <div class="wizard-header" id="wizardHeader"></div>
-              <form id="wizardForm" class="wizard-form"></form>
-              <div class="wizard-actions">
-                <button type="button" class="cta tertiary" id="backStepButton">Anterior</button>
-                <button type="button" class="cta primary" id="nextStepButton">Siguiente</button>
-              </div>
-            </div>
-
-            <div class="glass-panel result-shell hidden" id="resultPanel"></div>
-
-            <div class="glass-panel">
-              <div class="section-header">
-                <p class="kicker">Preguntas frecuentes</p>
-                <h3>Lo esencial antes de aplicar</h3>
-              </div>
-              <div class="faq-grid" id="faqGrid"></div>
-            </div>
-          </section>
-
-          <aside class="chat-column">
-            <div class="glass-panel chat-shell">
-              <div class="chat-header">
-                <div>
-                  <p class="kicker">Asistente IA</p>
-                  <h3>Orientacion en vivo</h3>
-                </div>
-                <span class="chat-status">Activo</span>
               </div>
 
               <div class="suggestion-strip" id="suggestionStrip"></div>
@@ -115,17 +124,85 @@
                 <label class="sr-only" for="chatInput">Pregunta al asistente</label>
                 <textarea
                   id="chatInput"
-                  name="chatInput"
                   rows="3"
-                  placeholder="Pregunta por documentos, criterios, fechas o como mejorar tu perfil."
+                  placeholder="Escribe una pregunta sobre convocatorias, requisitos o documentos."
                 ></textarea>
-                <button class="cta primary wide" type="submit" id="chatSubmitButton">Enviar consulta</button>
+                <button class="button button-solid button-wide" type="submit" id="chatSubmitButton">Enviar consulta</button>
               </form>
             </div>
-          </aside>
-        </section>
-      </main>
-    </div>
+
+            <aside class="tools-sidebar">
+              <div class="tool-card-grid" id="toolCards"></div>
+              <div class="assistant-capabilities" id="assistantCapabilities"></div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="wizard-section" id="herramientas">
+        <div class="container">
+          <div class="wizard-shell">
+            <div class="wizard-intro">
+              <div>
+                <p class="section-eyebrow">POSTULACION Y EVALUACION</p>
+                <h3>Elige la ruta que mejor se ajuste a tu nivel de avance</h3>
+                <p class="wizard-intro-copy">
+                  Usa la evaluacion rapida para obtener una lectura inicial o la postulacion guiada para organizar un expediente mas completo.
+                </p>
+              </div>
+              <div class="mode-switch" id="modeSwitch"></div>
+            </div>
+
+            <div class="step-progress" id="stepProgress"></div>
+            <div class="wizard-header" id="wizardHeader"></div>
+            <form class="wizard-form" id="wizardForm"></form>
+            <div class="wizard-actions">
+              <button class="button button-ghost" type="button" id="backStepButton">Anterior</button>
+              <button class="button button-solid" type="button" id="nextStepButton">Continuar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="result-section hidden" id="resultPanel"></section>
+
+      <footer class="site-footer">
+        <div class="site-footer-main">
+          <div class="container site-footer-main-inner">
+            <div class="footer-brand">
+              <div class="footer-brand-mark">Beca tu Futuro</div>
+              <div class="footer-brand-sub">Ministerio de Educacion Superior, Ciencia y Tecnologia</div>
+            </div>
+
+            <div class="footer-columns">
+              <div class="footer-column">
+                <h4>Ayuda</h4>
+                <div id="footerHelpLinks"></div>
+              </div>
+              <div class="footer-column">
+                <h4 id="footerInfoTitle"></h4>
+                <p id="footerInfoBody"></p>
+              </div>
+              <div class="footer-column">
+                <h4 id="footerContactTitle"></h4>
+                <div id="footerContactItems"></div>
+              </div>
+              <div class="footer-column">
+                <h4 id="footerAddressTitle"></h4>
+                <p id="footerAddressBody"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="site-footer-bottom">
+          <div class="container site-footer-bottom-inner">
+            <span id="footerCopyright"></span>
+            <div class="footer-socials" id="footerSocials"></div>
+          </div>
+        </div>
+      </footer>
+    </main>
 
     <template id="messageTemplate">
       <div class="message">
